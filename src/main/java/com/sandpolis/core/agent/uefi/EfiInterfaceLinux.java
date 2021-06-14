@@ -7,14 +7,15 @@
 //  as published by the Mozilla Foundation.                                   //
 //                                                                            //
 //============================================================================//
-module com.sandpolis.core.agent {
-	exports com.sandpolis.core.agent.config;
-	exports com.sandpolis.core.agent.init;
+package com.sandpolis.core.agent.uefi;
 
-	requires com.sandpolis.core.foundation;
-	requires com.sandpolis.core.instance;
-	requires com.sandpolis.core.net;
-	requires com.sandpolis.core.clientagent;
-	requires com.sandpolis.core.serveragent;
-	requires com.google.common;
+public class EfiInterfaceLinux implements EFI {
+
+	@Override
+	public boolean isEfiMode() {
+		// Check for mounted efivars
+
+		return false;
+	}
+
 }
