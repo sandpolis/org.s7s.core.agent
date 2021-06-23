@@ -21,10 +21,10 @@ dependencies {
 	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.1")
 
 	if (project.getParent() == null) {
-		api("com.sandpolis:core.clientagent:0.1.0")
-		api("com.sandpolis:core.serveragent:0.1.0")
-		implementation("com.sandpolis:core.net:0.2.0")
-		implementation("com.sandpolis:core.instance:0.2.0")
+		api("com.sandpolis:core.clientagent:+")
+		api("com.sandpolis:core.serveragent:+")
+		implementation("com.sandpolis:core.net:+")
+		implementation("com.sandpolis:core.instance:+")
 	} else {
 		api(project(":module:com.sandpolis.core.clientagent"))
 		api(project(":module:com.sandpolis.core.serveragent"))
