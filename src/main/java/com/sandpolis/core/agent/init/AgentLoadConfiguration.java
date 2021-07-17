@@ -55,4 +55,8 @@ public class AgentLoadConfiguration extends InitTask {
 		return "Load agent configuration";
 	}
 
+	@Override
+	public boolean fatal() {
+		return true;
+	}
 }

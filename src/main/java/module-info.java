@@ -10,6 +10,10 @@
 module com.sandpolis.core.agent {
 	exports com.sandpolis.core.agent.config;
 	exports com.sandpolis.core.agent.init;
+	exports com.sandpolis.core.agent.exe;
+	exports com.sandpolis.core.agent.cmd;
+
+	opens com.sandpolis.core.agent.init;
 
 	requires com.sandpolis.core.foundation;
 	requires com.sandpolis.core.instance;
@@ -17,4 +21,6 @@ module com.sandpolis.core.agent {
 	requires com.sandpolis.core.clientagent;
 	requires com.sandpolis.core.serveragent;
 	requires com.google.common;
+	requires org.slf4j;
+	requires com.google.protobuf;
 }
