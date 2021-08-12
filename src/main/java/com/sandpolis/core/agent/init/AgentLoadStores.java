@@ -31,6 +31,7 @@ import com.sandpolis.core.instance.Entrypoint;
 import com.sandpolis.core.instance.InitTask;
 import com.sandpolis.core.instance.TaskOutcome;
 import com.sandpolis.core.instance.config.CfgInstance;
+import com.sandpolis.core.instance.msg.MsgState.RQ_STStream;
 import com.sandpolis.core.instance.plugin.PluginStore;
 import com.sandpolis.core.instance.profile.ProfileStore;
 import com.sandpolis.core.instance.state.STStore;
@@ -43,6 +44,7 @@ import com.sandpolis.core.net.exelet.ExeletStore;
 import com.sandpolis.core.net.network.NetworkStore;
 import com.sandpolis.core.net.network.NetworkStore.ServerEstablishedEvent;
 import com.sandpolis.core.net.network.NetworkStore.ServerLostEvent;
+import com.sandpolis.core.net.state.STCmd;
 import com.sandpolis.core.net.stream.StreamStore;
 
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -141,6 +143,14 @@ public class AgentLoadStores extends InitTask {
 						}
 					});
 				}
+
+				// Sync the instance profile to the server
+				STCmd.async().sync(ProfileStore.instance().oid(), config -> {
+					config.direction = RQ_STStream.Direction.UPSTREAM;
+					config.initiator = true;
+					config.connection = ConnectionStore.getByCvid(NetworkStore.getPreferredServer().orElse(0))
+							.orElse(null);
+				});
 			}
 		});
 

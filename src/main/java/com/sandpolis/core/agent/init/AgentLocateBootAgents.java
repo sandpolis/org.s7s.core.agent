@@ -9,7 +9,7 @@
 //============================================================================//
 package com.sandpolis.core.agent.init;
 
-import java.io.IOException;
+import static com.sandpolis.core.instance.profile.ProfileStore.ProfileStore;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,17 +22,12 @@ public class AgentLocateBootAgents extends InitTask {
 
 	private static final Logger log = LoggerFactory.getLogger(AgentLoadConfiguration.class);
 
-	public static boolean boot_agent_present;
-
 	@Override
 	public TaskOutcome run(TaskOutcome outcome) throws Exception {
 
-		try {
-			for (var partition : BootAgentUtil.findPartitions()) {
-				boot_agent_present = true;
-			}
-		} catch (IOException e) {
-			return outcome.failure();
+		for (var partition : BootAgentUtil.findPartitions()) {
+			var oid = ProfileStore.instance().oid().relative("bootagent/gpt_partition/uuid");
+			ProfileStore.instance().attribute(oid).set(partition.unique_guid());
 		}
 
 		return outcome.success();
@@ -45,6 +40,6 @@ public class AgentLocateBootAgents extends InitTask {
 
 	@Override
 	public boolean fatal() {
-		return true;
+		return false;
 	}
 }

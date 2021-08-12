@@ -29,7 +29,7 @@ public final class BootAgentUtil {
 
 	private static final Logger log = LoggerFactory.getLogger(BootAgentUtil.class);
 
-	private static final String S7S_BOOT_AGENT_GUID = "";
+	private static final String S7S_BOOT_AGENT_GUID = "94C553B9-68CC-4AB3-AF38-218A02D57675";
 
 	private static final String ESP_GUID = "C12A7328-F81F-11D2-BA4B-00A0C93EC93B";
 
@@ -185,26 +185,20 @@ public final class BootAgentUtil {
 
 			log.trace("Discovered block size of {} for device: '{}'", block_size, path);
 
-			try {
-				var channel = FileChannel.open(path, StandardOpenOption.READ);
+			var channel = FileChannel.open(path, StandardOpenOption.READ);
 
-				// Skip protective MBR
-				channel.position(512);
+			// Skip protective MBR
+			channel.position(512);
 
-				var header = GptHeader.read(channel);
+			var header = GptHeader.read(channel);
 
-				for (int i = 0; i < header.number_of_entries(); i++) {
-					channel.position(header.first_entry_lba() * 512 + (header.size_of_entry() * i));
+			for (int i = 0; i < header.number_of_entries(); i++) {
+				channel.position(header.first_entry_lba() * 512 + (header.size_of_entry() * i));
 
-					try {
-						entries.add(GptPartition.read(channel));
-					} catch (IOException e) {
-					}
+				try {
+					entries.add(GptPartition.read(channel));
+				} catch (IOException e) {
 				}
-
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 
