@@ -87,11 +87,6 @@ public record GptPartition(
 				attributes.getLong(0), //
 				new String(partition_name.array(), StandardCharsets.UTF_16LE));
 
-		// Check for unused partition
-		if (partition.type_guid().equals("00000000-0000-0000-0000-000000000000")) {
-			throw new IOException(); // TODO
-		}
-
 		log.trace("Parsed GPT partition: {}", partition);
 		return partition;
 	}

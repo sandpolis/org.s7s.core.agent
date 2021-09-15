@@ -10,6 +10,7 @@
 package com.sandpolis.core.agent.init;
 
 import static com.sandpolis.core.instance.profile.ProfileStore.ProfileStore;
+import static com.sandpolis.core.instance.state.InstanceOids.InstanceOids;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +27,9 @@ public class AgentLocateBootAgents extends InitTask {
 	public TaskOutcome run(TaskOutcome outcome) throws Exception {
 
 		for (var partition : BootAgentUtil.findPartitions()) {
-			var oid = ProfileStore.instance().oid().relative("bootagent/gpt_partition/uuid");
-			ProfileStore.instance().attribute(oid).set(partition.unique_guid());
+			var partition_oid = InstanceOids().profile.bootagent.gptpartition(partition.unique_guid());
+
+			ProfileStore.instance().attribute(partition_oid.uuid).set(partition.unique_guid());
 		}
 
 		return outcome.success();

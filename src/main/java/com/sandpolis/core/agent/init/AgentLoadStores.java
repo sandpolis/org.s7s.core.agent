@@ -73,7 +73,7 @@ public class AgentLoadStores extends InitTask {
 		});
 
 		PluginStore.init(config -> {
-			config.collection = Oid.of("/profile//plugin", Entrypoint.data().uuid()).get();
+			config.collection = Oid.of("/profile/*/plugin", Entrypoint.data().uuid()).get();
 		});
 
 		StreamStore.init(config -> {

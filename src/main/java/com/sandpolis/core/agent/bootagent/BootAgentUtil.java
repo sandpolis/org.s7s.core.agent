@@ -198,6 +198,7 @@ public final class BootAgentUtil {
 				try {
 					entries.add(GptPartition.read(channel));
 				} catch (IOException e) {
+					log.debug("Failed to read partition information", e);
 				}
 			}
 		}
