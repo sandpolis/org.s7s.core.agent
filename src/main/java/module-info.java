@@ -23,4 +23,5 @@ module com.sandpolis.core.agent {
 	requires com.google.common;
 	requires org.slf4j;
 	requires com.google.protobuf;
+	requires com.fasterxml.jackson.databind;
 }

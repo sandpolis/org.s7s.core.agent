@@ -23,7 +23,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sandpolis.core.foundation.util.SystemUtil;
+import com.sandpolis.core.foundation.S7SProcess;
+import com.sandpolis.core.foundation.S7SSystem;
 
 public final class BootAgentUtil {
 
@@ -74,7 +75,7 @@ public final class BootAgentUtil {
 			throw new FileNotFoundException();
 		}
 
-		switch (SystemUtil.OS_TYPE) {
+		switch (S7SSystem.OS_TYPE) {
 		case LINUX:
 			// Check that EFI variables are available and accessible
 			if (Files.list(Paths.get("/sys/firmware/efi/efivars")).count() == 0) {
@@ -82,7 +83,7 @@ public final class BootAgentUtil {
 			}
 
 			// Create the boot entry (TODO manipulate the EFI vars without efibootmgr)
-			if (SystemUtil.exec("efibootmgr", "-c", "-d", "/dev/", "-p", "", "-L", "S7S Boot Agent", "-l",
+			if (S7SProcess.exec("efibootmgr", "-c", "-d", "/dev/", "-p", "", "-L", "S7S Boot Agent", "-l",
 					"\\EFI\\s7s_x64.efi").exitValue() != 0) {
 				throw new RuntimeException();
 			}
@@ -91,8 +92,8 @@ public final class BootAgentUtil {
 			new Thread(() -> {
 				try {
 					Thread.sleep(8000);
-					if (SystemUtil.exec("efibootmgr", "-n", "").exitValue() == 0) {
-						SystemUtil.exec("reboot");
+					if (S7SProcess.exec("efibootmgr", "-n", "").exitValue() == 0) {
+						S7SProcess.exec("reboot");
 					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -121,7 +122,7 @@ public final class BootAgentUtil {
 	private static int getLogicalBlockSize(Path device) {
 
 		try {
-			switch (SystemUtil.OS_TYPE) {
+			switch (S7SSystem.OS_TYPE) {
 			case LINUX:
 				return Integer.parseInt(Files
 						.readString(Paths.get("/sys/block/" + device.getFileName() + "/queue/physical_block_size")));
@@ -147,7 +148,7 @@ public final class BootAgentUtil {
 
 		List<Path> paths = new ArrayList<>();
 
-		switch (SystemUtil.OS_TYPE) {
+		switch (S7SSystem.OS_TYPE) {
 		case LINUX:
 			Files.list(Paths.get("/dev")).forEach(path -> {
 

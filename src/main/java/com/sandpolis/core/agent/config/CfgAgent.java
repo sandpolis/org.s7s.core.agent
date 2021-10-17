@@ -9,39 +9,37 @@
 //============================================================================//
 package com.sandpolis.core.agent.config;
 
-import com.sandpolis.core.foundation.config.ConfigProperty;
-import com.sandpolis.core.instance.config.DefaultConfigProperty;
+import com.sandpolis.core.instance.config.ConfigProperty;
 
 public final class CfgAgent {
 
 	/**
 	 * The connection cooldown.
 	 */
-	public static final ConfigProperty<Integer> SERVER_COOLDOWN = new DefaultConfigProperty<>(Integer.class,
+	public static final ConfigProperty<Integer> SERVER_COOLDOWN = ConfigProperty.evaluate(Integer.class,
 			"s7s.agent.cooldown");
 
 	/**
 	 * The connection timeout.
 	 */
-	public static final ConfigProperty<Integer> SERVER_TIMEOUT = new DefaultConfigProperty<>(Integer.class,
+	public static final ConfigProperty<Integer> SERVER_TIMEOUT = ConfigProperty.evaluate(Integer.class,
 			"s7s.agent.timeout");
 
 	/**
 	 * The primary server.
 	 */
-	public static final ConfigProperty<String> SERVER_ADDRESS = new DefaultConfigProperty<>(String.class,
+	public static final ConfigProperty<String> SERVER_ADDRESS = ConfigProperty.evaluate(String.class,
 			"s7s.agent.address");
 
 	/**
 	 * The authentication type.
 	 */
-	public static final ConfigProperty<String> AUTH_TYPE = new DefaultConfigProperty<>(String.class,
-			"s7s.agent.auth.type");
+	public static final ConfigProperty<String> AUTH_TYPE = ConfigProperty.evaluate(String.class, "s7s.agent.auth.type");
 
 	/**
 	 * The authentication password.
 	 */
-	public static final ConfigProperty<String> AUTH_PASSWORD = new DefaultConfigProperty<>(String.class,
+	public static final ConfigProperty<String> AUTH_PASSWORD = ConfigProperty.evaluate(String.class,
 			"s7s.agent.auth.password");
 
 	private CfgAgent() {

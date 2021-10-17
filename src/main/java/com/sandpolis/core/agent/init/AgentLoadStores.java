@@ -26,26 +26,18 @@ import com.sandpolis.core.agent.cmd.AuthCmd;
 import com.sandpolis.core.agent.config.CfgAgent;
 import com.sandpolis.core.agent.exe.AgentExe;
 import com.sandpolis.core.clientagent.cmd.PluginCmd;
-import com.sandpolis.core.foundation.Result.Outcome;
 import com.sandpolis.core.instance.Entrypoint;
 import com.sandpolis.core.instance.InitTask;
-import com.sandpolis.core.instance.TaskOutcome;
 import com.sandpolis.core.instance.config.CfgInstance;
 import com.sandpolis.core.instance.msg.MsgState.RQ_STStream;
-import com.sandpolis.core.instance.plugin.PluginStore;
-import com.sandpolis.core.instance.profile.ProfileStore;
-import com.sandpolis.core.instance.state.STStore;
 import com.sandpolis.core.instance.state.oid.Oid;
 import com.sandpolis.core.instance.state.st.EphemeralDocument;
 import com.sandpolis.core.instance.thread.ThreadStore;
 import com.sandpolis.core.net.channel.client.ClientChannelInitializer;
-import com.sandpolis.core.net.connection.ConnectionStore;
-import com.sandpolis.core.net.exelet.ExeletStore;
-import com.sandpolis.core.net.network.NetworkStore;
+import com.sandpolis.core.net.msg.MsgOutcome.RS_Outcome;
 import com.sandpolis.core.net.network.NetworkStore.ServerEstablishedEvent;
 import com.sandpolis.core.net.network.NetworkStore.ServerLostEvent;
 import com.sandpolis.core.net.state.STCmd;
-import com.sandpolis.core.net.stream.StreamStore;
 
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.util.concurrent.UnorderedThreadPoolEventExecutor;
@@ -53,7 +45,7 @@ import io.netty.util.concurrent.UnorderedThreadPoolEventExecutor;
 public class AgentLoadStores extends InitTask {
 
 	@Override
-	public TaskOutcome run(TaskOutcome outcome) throws Exception {
+	public TaskOutcome run(TaskOutcome.Factory outcome) throws Exception {
 		ThreadStore.ThreadStore.init(config -> {
 			config.defaults.put("net.exelet", new NioEventLoopGroup(2).next());
 			config.defaults.put("net.connection.outgoing", new NioEventLoopGroup(2).next());
@@ -69,26 +61,26 @@ public class AgentLoadStores extends InitTask {
 		});
 
 		ProfileStore.init(config -> {
-			config.collection = Oid.of("/profile").get();
+			config.collection = STStore.get(Oid.of("/profile"));
 		});
 
 		PluginStore.init(config -> {
-			config.collection = Oid.of("/profile/*/plugin", Entrypoint.data().uuid()).get();
+			config.collection = STStore.get(Oid.of("/profile/*/plugin", Entrypoint.data().uuid()));
 		});
 
 		StreamStore.init(config -> {
 		});
 
 		ExeletStore.init(config -> {
-			config.exelets = List.of(AgentExe.class);
+			config.exelets.add(AgentExe.class);
 		});
 
 		ConnectionStore.init(config -> {
-			config.collection = Oid.of("/connection").get();
+			config.collection = STStore.get(Oid.of("/connection"));
 		});
 
 		NetworkStore.init(config -> {
-			config.collection = Oid.of("/network_connection").get();
+			config.collection = STStore.get(Oid.of("/network_connection"));
 		});
 
 		NetworkStore.register(new Object() {
@@ -114,7 +106,7 @@ public class AgentLoadStores extends InitTask {
 
 			@Subscribe
 			private void onSrvEstablished(ServerEstablishedEvent event) {
-				CompletionStage<Outcome> future;
+				CompletionStage<RS_Outcome> future;
 
 				switch (CfgAgent.AUTH_TYPE.value().orElse("none")) {
 				case "password":
@@ -154,7 +146,7 @@ public class AgentLoadStores extends InitTask {
 			}
 		});
 
-		return outcome.success();
+		return outcome.succeeded();
 	}
 
 	@Override

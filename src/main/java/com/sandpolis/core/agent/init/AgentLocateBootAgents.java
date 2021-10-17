@@ -17,14 +17,13 @@ import org.slf4j.LoggerFactory;
 
 import com.sandpolis.core.agent.bootagent.BootAgentUtil;
 import com.sandpolis.core.instance.InitTask;
-import com.sandpolis.core.instance.TaskOutcome;
 
 public class AgentLocateBootAgents extends InitTask {
 
 	private static final Logger log = LoggerFactory.getLogger(AgentLoadConfiguration.class);
 
 	@Override
-	public TaskOutcome run(TaskOutcome outcome) throws Exception {
+	public TaskOutcome run(TaskOutcome.Factory outcome) throws Exception {
 
 		for (var partition : BootAgentUtil.findPartitions()) {
 			var partition_oid = InstanceOids().profile.bootagent.gptpartition(partition.unique_guid());
@@ -32,7 +31,7 @@ public class AgentLocateBootAgents extends InitTask {
 			ProfileStore.instance().attribute(partition_oid.uuid).set(partition.unique_guid());
 		}
 
-		return outcome.success();
+		return outcome.succeeded();
 	}
 
 	@Override

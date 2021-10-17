@@ -13,14 +13,12 @@ import static com.sandpolis.core.net.connection.ConnectionStore.ConnectionStore;
 
 import com.sandpolis.core.agent.config.CfgAgent;
 import com.sandpolis.core.instance.InitTask;
-import com.sandpolis.core.instance.TaskOutcome;
 import com.sandpolis.core.net.channel.client.ClientChannelInitializer;
-import com.sandpolis.core.net.connection.ConnectionStore;
 
 public class AgentConnectionRoutine extends InitTask {
 
 	@Override
-	public TaskOutcome run(TaskOutcome outcome) throws Exception {
+	public TaskOutcome run(TaskOutcome.Factory outcome) throws Exception {
 		ConnectionStore.connect(config -> {
 			config.address(CfgAgent.SERVER_ADDRESS.value().get());
 			config.timeout = CfgAgent.SERVER_TIMEOUT.value().orElse(1000);
@@ -29,7 +27,7 @@ public class AgentConnectionRoutine extends InitTask {
 			}));
 		});
 
-		return outcome.success();
+		return outcome.succeeded();
 	}
 
 	@Override

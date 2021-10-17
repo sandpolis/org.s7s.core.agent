@@ -14,13 +14,11 @@ import static com.sandpolis.core.net.connection.ConnectionStore.ConnectionStore;
 import java.io.Console;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Predicate;
 
 import com.sandpolis.core.agent.cmd.AuthCmd;
-import com.sandpolis.core.agent.config.CfgAgent;
-import com.sandpolis.core.foundation.util.ValidationUtil;
+import com.sandpolis.core.foundation.S7SString;
 import com.sandpolis.core.instance.Environment;
 import com.sandpolis.core.net.connection.Connection;
 
@@ -49,15 +47,13 @@ public final class ConfigPrompter {
 			throw new RuntimeException("No console attached");
 		}
 
-		Properties config = new Properties();
-
 		// Ask server address
 		var server = prompt("Enter server address", "127.0.0.1", answer -> {
 
 			var components = answer.split(":");
 			if (components.length == 2) {
 				// Check the explicit port
-				if (!ValidationUtil.port(components[1])) {
+				if (!S7SString.of(components[1]).isPort()) {
 					console.format("Invalid port: '%s'%n", components[1]);
 					return false;
 				}
@@ -67,7 +63,7 @@ public final class ConfigPrompter {
 			}
 
 			// Validate hostname
-			if (!ValidationUtil.address(components[0])) {
+			if (!S7SString.of(components[0]).isIPv4() && !S7SString.of(components[0]).isDns()) {
 				console.format("Invalid address%n");
 				return false;
 			}
@@ -82,7 +78,7 @@ public final class ConfigPrompter {
 			server = server.substring(0, server.indexOf(':'));
 		}
 
-		config.setProperty(CfgAgent.SERVER_ADDRESS.property(), server + ":" + port);
+//		config.setProperty(CfgAgent.SERVER_ADDRESS.name(), server + ":" + port);
 
 		// Attempt connection
 		Connection connection;
@@ -115,7 +111,7 @@ public final class ConfigPrompter {
 					}
 					return true;
 				});
-				config.setProperty("", password);
+//				config.setProperty("", password);
 
 				if (connection != null) {
 					try {
@@ -151,7 +147,7 @@ public final class ConfigPrompter {
 
 		// Store configuration
 		try (var out = Files.newOutputStream(Environment.CFG.path().resolve("instance.properties"))) {
-			config.store(out, null);
+//			config.store(out, null);
 		}
 	}
 
