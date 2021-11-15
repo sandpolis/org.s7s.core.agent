@@ -12,8 +12,8 @@ package com.sandpolis.core.agent.cmd;
 import java.util.concurrent.CompletionStage;
 
 import com.sandpolis.core.net.cmdlet.Cmdlet;
-import com.sandpolis.core.net.msg.MsgOutcome.RS_Outcome;
-import com.sandpolis.core.serveragent.msg.MsgAuth.RQ_AuthSession;
+import com.sandpolis.core.serveragent.Messages.RQ_AuthSession;
+import com.sandpolis.core.serveragent.Messages.RS_AuthSession;
 
 /**
  * {@link AuthCmd} contains commands required for agent instances to
@@ -28,11 +28,15 @@ public final class AuthCmd extends Cmdlet<AuthCmd> {
 	 *
 	 * @return An asynchronous {@link CompletionStage}
 	 */
-	public CompletionStage<RS_Outcome> none() {
+	public CompletionStage<RS_AuthSession> none() {
 
-		return request(RS_Outcome.class, RQ_AuthSession.newBuilder()).thenApply(rs -> {
-			if (rs.getResult()) {
+		return request(RS_AuthSession.class, RQ_AuthSession.newBuilder()).thenApply(rs -> {
+			switch (rs) {
+			case AUTH_SESSION_OK:
 				target.authenticate();
+				break;
+			default:
+				break;
 			}
 			return rs;
 		});
@@ -43,11 +47,15 @@ public final class AuthCmd extends Cmdlet<AuthCmd> {
 	 *
 	 * @return An asynchronous {@link CompletionStage}
 	 */
-	public CompletionStage<RS_Outcome> password(String password) {
+	public CompletionStage<RS_AuthSession> password(String password) {
 
-		return request(RS_Outcome.class, RQ_AuthSession.newBuilder().setPassword(password)).thenApply(rs -> {
-			if (rs.getResult()) {
+		return request(RS_AuthSession.class, RQ_AuthSession.newBuilder().setPassword(password)).thenApply(rs -> {
+			switch (rs) {
+			case AUTH_SESSION_OK:
 				target.authenticate();
+				break;
+			default:
+				break;
 			}
 			return rs;
 		});

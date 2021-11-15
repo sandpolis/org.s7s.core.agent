@@ -14,6 +14,7 @@ module com.sandpolis.core.agent {
 	exports com.sandpolis.core.agent.cmd;
 
 	opens com.sandpolis.core.agent.init;
+	opens com.sandpolis.core.agent.config;
 
 	requires com.sandpolis.core.foundation;
 	requires com.sandpolis.core.instance;

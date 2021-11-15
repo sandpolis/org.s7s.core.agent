@@ -15,11 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.protobuf.MessageLiteOrBuilder;
-import com.sandpolis.core.serveragent.msg.MsgAgent.RQ_AgentMetadata;
-import com.sandpolis.core.serveragent.msg.MsgAgent.RS_AgentMetadata;
 import com.sandpolis.core.foundation.S7SSystem;
-import com.sandpolis.core.instance.Environment;
 import com.sandpolis.core.net.exelet.Exelet;
+import com.sandpolis.core.serveragent.Messages.RQ_AgentMetadata;
+import com.sandpolis.core.serveragent.Messages.RS_AgentMetadata;
 
 public final class AgentExe extends Exelet {
 
@@ -33,9 +32,7 @@ public final class AgentExe extends Exelet {
 				// Network hostname
 				.setHostname(InetAddress.getLocalHost().getHostName())
 				// OS Family
-				.setOs(S7SSystem.OS_TYPE)
-				// Base directory location
-				.setInstallDirectory(Environment.JAR.path().getParent().toString());
+				.setOs(S7SSystem.OS_TYPE);
 	}
 
 	private AgentExe() {

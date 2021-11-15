@@ -17,7 +17,6 @@ import static com.sandpolis.core.net.exelet.ExeletStore.ExeletStore;
 import static com.sandpolis.core.net.network.NetworkStore.NetworkStore;
 import static com.sandpolis.core.net.stream.StreamStore.StreamStore;
 
-import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executors;
 
@@ -29,15 +28,15 @@ import com.sandpolis.core.clientagent.cmd.PluginCmd;
 import com.sandpolis.core.instance.Entrypoint;
 import com.sandpolis.core.instance.InitTask;
 import com.sandpolis.core.instance.config.CfgInstance;
-import com.sandpolis.core.instance.msg.MsgState.RQ_STStream;
+import com.sandpolis.core.instance.Messages.RQ_STStream;
 import com.sandpolis.core.instance.state.oid.Oid;
 import com.sandpolis.core.instance.state.st.EphemeralDocument;
 import com.sandpolis.core.instance.thread.ThreadStore;
 import com.sandpolis.core.net.channel.client.ClientChannelInitializer;
-import com.sandpolis.core.net.msg.MsgOutcome.RS_Outcome;
 import com.sandpolis.core.net.network.NetworkStore.ServerEstablishedEvent;
 import com.sandpolis.core.net.network.NetworkStore.ServerLostEvent;
 import com.sandpolis.core.net.state.STCmd;
+import com.sandpolis.core.serveragent.Messages.RS_AuthSession;
 
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.util.concurrent.UnorderedThreadPoolEventExecutor;
@@ -106,32 +105,40 @@ public class AgentLoadStores extends InitTask {
 
 			@Subscribe
 			private void onSrvEstablished(ServerEstablishedEvent event) {
-				CompletionStage<RS_Outcome> future;
+				CompletionStage<RS_AuthSession> future;
 
 				switch (CfgAgent.AUTH_TYPE.value().orElse("none")) {
 				case "password":
-					future = AuthCmd.async().target(event.cvid()).password(CfgAgent.AUTH_PASSWORD.value().get());
+					future = AuthCmd.async().target(event.sid()).password(CfgAgent.AUTH_PASSWORD.value().get());
 					break;
 				default:
-					future = AuthCmd.async().target(event.cvid()).none();
+					future = AuthCmd.async().target(event.sid()).none();
 					break;
 				}
 
 				future = future.thenApply(rs -> {
-					if (!rs.getResult()) {
+					switch (rs) {
+					case AUTH_SESSION_OK:
+						break;
+					default:
 						// Close the connection
-						ConnectionStore.getByCvid(event.cvid()).ifPresent(sock -> {
+						ConnectionStore.getBySid(event.sid()).ifPresent(sock -> {
 							sock.close();
 						});
+						break;
 					}
 					return rs;
 				});
 
 				if (CfgInstance.PLUGIN_ENABLED.value().orElse(true)) {
 					future.thenAccept(rs -> {
-						if (rs.getResult()) {
+						switch (rs) {
+						case AUTH_SESSION_OK:
 							// Synchronize plugins
 							PluginCmd.async().synchronize().thenRun(PluginStore::loadPlugins);
+							break;
+						default:
+							break;
 						}
 					});
 				}
@@ -140,7 +147,7 @@ public class AgentLoadStores extends InitTask {
 				STCmd.async().sync(ProfileStore.instance().oid(), config -> {
 					config.direction = RQ_STStream.Direction.UPSTREAM;
 					config.initiator = true;
-					config.connection = ConnectionStore.getByCvid(NetworkStore.getPreferredServer().orElse(0))
+					config.connection = ConnectionStore.getBySid(NetworkStore.getPreferredServer().orElse(0))
 							.orElse(null);
 				});
 			}

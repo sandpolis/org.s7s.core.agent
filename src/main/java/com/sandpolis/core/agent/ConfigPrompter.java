@@ -21,6 +21,7 @@ import com.sandpolis.core.agent.cmd.AuthCmd;
 import com.sandpolis.core.foundation.S7SString;
 import com.sandpolis.core.instance.Environment;
 import com.sandpolis.core.net.connection.Connection;
+import com.sandpolis.core.serveragent.Messages.RS_AuthSession;
 
 /**
  * Obtain the configuration from the user via the terminal.
@@ -115,8 +116,8 @@ public final class ConfigPrompter {
 
 				if (connection != null) {
 					try {
-						if (!AuthCmd.async().target(connection).password(password).toCompletableFuture().get()
-								.getResult()) {
+						if (AuthCmd.async().target(connection).password(password).toCompletableFuture()
+								.get() != RS_AuthSession.AUTH_SESSION_OK) {
 							continue;
 						}
 					} catch (InterruptedException | ExecutionException e) {
@@ -135,7 +136,8 @@ public final class ConfigPrompter {
 			console.format("Warning: no authentication will be used (be careful)%n");
 			if (connection != null) {
 				try {
-					if (!AuthCmd.async().target(connection).none().toCompletableFuture().get().getResult()) {
+					if (AuthCmd.async().target(connection).none().toCompletableFuture()
+							.get() != RS_AuthSession.AUTH_SESSION_OK) {
 						console.format("Error: failed to authenticate%n");
 					}
 				} catch (InterruptedException | ExecutionException e) {
