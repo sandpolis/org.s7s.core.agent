@@ -11,7 +11,7 @@ package com.sandpolis.core.agent.init;
 
 import static com.sandpolis.core.net.connection.ConnectionStore.ConnectionStore;
 
-import com.sandpolis.core.agent.config.CfgAgent;
+import com.sandpolis.core.agent.config.AgentConfig;
 import com.sandpolis.core.instance.InitTask;
 import com.sandpolis.core.net.channel.client.ClientChannelInitializer;
 
@@ -20,8 +20,8 @@ public class AgentConnectionRoutine extends InitTask {
 	@Override
 	public TaskOutcome run(TaskOutcome.Factory outcome) throws Exception {
 		ConnectionStore.connect(config -> {
-			config.address(CfgAgent.SERVER_ADDRESS.value().get());
-			config.timeout = CfgAgent.SERVER_TIMEOUT.value().orElse(1000);
+			config.address(AgentConfig.SERVER_ADDRESS.value().get());
+			config.timeout = AgentConfig.SERVER_TIMEOUT.value().orElse(1000);
 			config.bootstrap.handler(new ClientChannelInitializer(struct -> {
 				struct.clientTlsInsecure();
 			}));

@@ -22,12 +22,14 @@ import java.util.concurrent.Executors;
 
 import com.google.common.eventbus.Subscribe;
 import com.sandpolis.core.agent.cmd.AuthCmd;
+import com.sandpolis.core.agent.config.AgentConfig;
 import com.sandpolis.core.agent.config.CfgAgent;
 import com.sandpolis.core.agent.exe.AgentExe;
 import com.sandpolis.core.clientagent.cmd.PluginCmd;
 import com.sandpolis.core.instance.Entrypoint;
 import com.sandpolis.core.instance.InitTask;
 import com.sandpolis.core.instance.config.CfgInstance;
+import com.sandpolis.core.instance.config.InstanceConfig;
 import com.sandpolis.core.instance.Messages.RQ_STStream;
 import com.sandpolis.core.instance.state.oid.Oid;
 import com.sandpolis.core.instance.state.st.EphemeralDocument;
@@ -95,8 +97,8 @@ public class AgentLoadStores extends InitTask {
 				}
 
 				ConnectionStore.connect(config -> {
-					config.address(CfgAgent.SERVER_ADDRESS.value().get());
-					config.timeout = CfgAgent.SERVER_TIMEOUT.value().orElse(1000);
+					config.address(AgentConfig.SERVER_ADDRESS.value().get());
+					config.timeout = AgentConfig.SERVER_TIMEOUT.value().orElse(1000);
 					config.bootstrap.handler(new ClientChannelInitializer(struct -> {
 						struct.clientTlsInsecure();
 					}));
@@ -109,7 +111,7 @@ public class AgentLoadStores extends InitTask {
 
 				switch (CfgAgent.AUTH_TYPE.value().orElse("none")) {
 				case "password":
-					future = AuthCmd.async().target(event.sid()).password(CfgAgent.AUTH_PASSWORD.value().get());
+					future = AuthCmd.async().target(event.sid()).password(AgentConfig.AUTH_PASSWORD.value().get());
 					break;
 				default:
 					future = AuthCmd.async().target(event.sid()).none();
@@ -130,7 +132,7 @@ public class AgentLoadStores extends InitTask {
 					return rs;
 				});
 
-				if (CfgInstance.PLUGIN_ENABLED.value().orElse(true)) {
+				if (InstanceConfig.PLUGIN_ENABLED.value().orElse(true)) {
 					future.thenAccept(rs -> {
 						switch (rs) {
 						case AUTH_SESSION_OK:
