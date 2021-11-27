@@ -10,6 +10,7 @@
 package com.sandpolis.core.agent;
 
 import com.sandpolis.core.instance.Entrypoint;
+import com.sandpolis.core.instance.EnvironmentVariable;
 import com.sandpolis.core.instance.RuntimeVariable;
 import com.sandpolis.core.instance.SystemProperty;
 import com.sandpolis.core.instance.state.oid.Oid;
@@ -35,12 +36,13 @@ public class AgentContext {
 	});
 
 	/**
-	 * The server addresses.
+	 * The server address.
 	 */
-	public static final RuntimeVariable<String[]> SERVER_ADDRESS = RuntimeVariable.of(cfg -> {
-		cfg.type = String[].class;
+	public static final RuntimeVariable<String> SERVER_ADDRESS = RuntimeVariable.of(cfg -> {
+		cfg.type = String.class;
 		cfg.secondary = SystemProperty.of("s7s.agent.address");
-		cfg.defaultValue = () -> AgentConfig.EMBEDDED.network().servers().toArray(String[]::new);
+		cfg.tertiary = EnvironmentVariable.of("S7S_SERVER_ADDRESS");
+		cfg.defaultValue = () -> AgentConfig.EMBEDDED.network().server_address();
 	});
 
 	/**

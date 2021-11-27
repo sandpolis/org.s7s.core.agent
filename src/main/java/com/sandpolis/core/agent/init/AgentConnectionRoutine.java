@@ -21,7 +21,7 @@ public class AgentConnectionRoutine extends InitTask {
 	@Override
 	public TaskOutcome run(TaskOutcome.Factory outcome) throws Exception {
 		ConnectionStore.connect(config -> {
-			config.address(AgentContext.SERVER_ADDRESS.get()[0]);
+			config.address(AgentContext.SERVER_ADDRESS.get());
 			config.timeout = AgentContext.SERVER_TIMEOUT.get();
 			config.bootstrap.handler(new ClientChannelInitializer(struct -> {
 				struct.clientTlsInsecure();
