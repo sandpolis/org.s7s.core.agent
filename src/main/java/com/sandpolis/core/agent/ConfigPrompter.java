@@ -19,7 +19,6 @@ import java.util.function.Predicate;
 
 import com.sandpolis.core.agent.cmd.AuthCmd;
 import com.sandpolis.core.foundation.S7SString;
-import com.sandpolis.core.instance.Environment;
 import com.sandpolis.core.net.connection.Connection;
 import com.sandpolis.core.serveragent.Messages.RS_AuthSession;
 
@@ -145,11 +144,6 @@ public final class ConfigPrompter {
 					e.printStackTrace();
 				}
 			}
-		}
-
-		// Store configuration
-		try (var out = Files.newOutputStream(Environment.CFG.path().resolve("instance.properties"))) {
-//			config.store(out, null);
 		}
 	}
 

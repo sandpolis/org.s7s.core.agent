@@ -21,20 +21,21 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executors;
 
 import com.google.common.eventbus.Subscribe;
+import com.sandpolis.core.agent.AgentConfig;
+import com.sandpolis.core.agent.AgentContext;
 import com.sandpolis.core.agent.cmd.AuthCmd;
-import com.sandpolis.core.agent.config.AgentConfig;
-import com.sandpolis.core.agent.config.CfgAgent;
 import com.sandpolis.core.agent.exe.AgentExe;
 import com.sandpolis.core.clientagent.cmd.PluginCmd;
 import com.sandpolis.core.instance.Entrypoint;
 import com.sandpolis.core.instance.InitTask;
-import com.sandpolis.core.instance.config.CfgInstance;
-import com.sandpolis.core.instance.config.InstanceConfig;
+import com.sandpolis.core.instance.InstanceContext;
 import com.sandpolis.core.instance.Messages.RQ_STStream;
+import com.sandpolis.core.instance.plugin.PluginStore;
 import com.sandpolis.core.instance.state.oid.Oid;
 import com.sandpolis.core.instance.state.st.EphemeralDocument;
 import com.sandpolis.core.instance.thread.ThreadStore;
 import com.sandpolis.core.net.channel.client.ClientChannelInitializer;
+import com.sandpolis.core.net.connection.ConnectionStore;
 import com.sandpolis.core.net.network.NetworkStore.ServerEstablishedEvent;
 import com.sandpolis.core.net.network.NetworkStore.ServerLostEvent;
 import com.sandpolis.core.net.state.STCmd;
@@ -97,8 +98,8 @@ public class AgentLoadStores extends InitTask {
 				}
 
 				ConnectionStore.connect(config -> {
-					config.address(AgentConfig.SERVER_ADDRESS.value().get());
-					config.timeout = AgentConfig.SERVER_TIMEOUT.value().orElse(1000);
+					config.address(AgentContext.SERVER_ADDRESS.get()[0]);
+					config.timeout = AgentContext.SERVER_TIMEOUT.get();
 					config.bootstrap.handler(new ClientChannelInitializer(struct -> {
 						struct.clientTlsInsecure();
 					}));
@@ -109,13 +110,13 @@ public class AgentLoadStores extends InitTask {
 			private void onSrvEstablished(ServerEstablishedEvent event) {
 				CompletionStage<RS_AuthSession> future;
 
-				switch (CfgAgent.AUTH_TYPE.value().orElse("none")) {
-				case "password":
-					future = AuthCmd.async().target(event.sid()).password(AgentConfig.AUTH_PASSWORD.value().get());
-					break;
-				default:
+				if (AgentContext.AUTH_PASSWORD.get() != null) {
+					future = AuthCmd.async().target(event.sid()).password(AgentContext.AUTH_PASSWORD.get());
+				} else if (AgentContext.AUTH_CERTIFICATE.get() != null) {
+					// TODO
+					return;
+				} else {
 					future = AuthCmd.async().target(event.sid()).none();
-					break;
 				}
 
 				future = future.thenApply(rs -> {
@@ -132,7 +133,7 @@ public class AgentLoadStores extends InitTask {
 					return rs;
 				});
 
-				if (InstanceConfig.PLUGIN_ENABLED.value().orElse(true)) {
+				if (InstanceContext.PLUGIN_ENABLED.get()) {
 					future.thenAccept(rs -> {
 						switch (rs) {
 						case AUTH_SESSION_OK:

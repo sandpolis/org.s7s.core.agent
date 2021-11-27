@@ -8,13 +8,11 @@
 //                                                                            //
 //============================================================================//
 module com.sandpolis.core.agent {
-	exports com.sandpolis.core.agent.config;
 	exports com.sandpolis.core.agent.init;
 	exports com.sandpolis.core.agent.exe;
 	exports com.sandpolis.core.agent.cmd;
 
 	opens com.sandpolis.core.agent.init;
-	opens com.sandpolis.core.agent.config;
 
 	requires com.sandpolis.core.foundation;
 	requires com.sandpolis.core.instance;

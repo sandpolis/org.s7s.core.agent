@@ -14,9 +14,8 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sandpolis.core.agent.AgentConfig;
 import com.sandpolis.core.agent.ConfigPrompter;
-import com.sandpolis.core.agent.config.AgentConfig;
-import com.sandpolis.core.agent.config.CfgAgent;
 import com.sandpolis.core.instance.InitTask;
 
 public class AgentLoadConfiguration extends InitTask {
@@ -27,7 +26,7 @@ public class AgentLoadConfiguration extends InitTask {
 	public TaskOutcome run(TaskOutcome.Factory outcome) throws Exception {
 
 		// Check for configuration
-		if (AgentConfig.get().isEmpty()) {
+		if (AgentConfig.EMBEDDED == null) {
 			log.info("Requesting configuration via user input");
 			try {
 				new ConfigPrompter().run();
@@ -35,9 +34,6 @@ public class AgentLoadConfiguration extends InitTask {
 				throw new RuntimeException(e);
 			}
 		}
-
-		// Ensure config is valid
-		CfgAgent.SERVER_ADDRESS.require();
 
 		return outcome.succeeded();
 	}
