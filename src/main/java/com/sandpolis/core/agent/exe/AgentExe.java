@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.protobuf.MessageLiteOrBuilder;
 import com.sandpolis.core.foundation.S7SSystem;
-import com.sandpolis.core.net.exelet.Exelet;
+import com.sandpolis.core.instance.exelet.Exelet;
 import com.sandpolis.core.serveragent.Messages.RQ_AgentMetadata;
 import com.sandpolis.core.serveragent.Messages.RS_AgentMetadata;
 

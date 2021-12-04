@@ -11,7 +11,7 @@ package com.sandpolis.core.agent.cmd;
 
 import java.util.concurrent.CompletionStage;
 
-import com.sandpolis.core.net.cmdlet.Cmdlet;
+import com.sandpolis.core.instance.cmdlet.Cmdlet;
 import com.sandpolis.core.serveragent.Messages.RQ_AuthSession;
 import com.sandpolis.core.serveragent.Messages.RS_AuthSession;
 

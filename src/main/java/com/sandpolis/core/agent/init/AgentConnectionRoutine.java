@@ -9,12 +9,12 @@
 //============================================================================//
 package com.sandpolis.core.agent.init;
 
-import static com.sandpolis.core.net.connection.ConnectionStore.ConnectionStore;
+import static com.sandpolis.core.instance.connection.ConnectionStore.ConnectionStore;
 
 import com.sandpolis.core.agent.AgentConfig;
 import com.sandpolis.core.agent.AgentContext;
 import com.sandpolis.core.instance.InitTask;
-import com.sandpolis.core.net.channel.client.ClientChannelInitializer;
+import com.sandpolis.core.instance.channel.client.ClientChannelInitializer;
 
 public class AgentConnectionRoutine extends InitTask {
 

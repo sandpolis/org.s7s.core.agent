@@ -22,12 +22,10 @@ dependencies {
 	if (project.getParent() == null) {
 		api("com.sandpolis:core.clientagent:+")
 		api("com.sandpolis:core.serveragent:+")
-		implementation("com.sandpolis:core.net:+")
 		implementation("com.sandpolis:core.instance:+")
 	} else {
 		api(project(":module:com.sandpolis.core.clientagent"))
 		api(project(":module:com.sandpolis.core.serveragent"))
-		implementation(project(":module:com.sandpolis.core.net"))
 		implementation(project(":module:com.sandpolis.core.instance"))
 	}
 }

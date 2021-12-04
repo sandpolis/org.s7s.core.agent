@@ -18,7 +18,6 @@ module com.sandpolis.core.agent {
 
 	requires com.sandpolis.core.foundation;
 	requires com.sandpolis.core.instance;
-	requires com.sandpolis.core.net;
 	requires com.sandpolis.core.clientagent;
 	requires com.sandpolis.core.serveragent;
 	requires com.google.common;

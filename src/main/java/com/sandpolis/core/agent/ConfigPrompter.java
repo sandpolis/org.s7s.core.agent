@@ -9,7 +9,7 @@
 //============================================================================//
 package com.sandpolis.core.agent;
 
-import static com.sandpolis.core.net.connection.ConnectionStore.ConnectionStore;
+import static com.sandpolis.core.instance.connection.ConnectionStore.ConnectionStore;
 
 import java.io.Console;
 import java.io.IOException;
@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 
 import com.sandpolis.core.agent.cmd.AuthCmd;
 import com.sandpolis.core.foundation.S7SString;
-import com.sandpolis.core.net.connection.Connection;
+import com.sandpolis.core.instance.connection.Connection;
 import com.sandpolis.core.serveragent.Messages.RS_AuthSession;
 
 /**
