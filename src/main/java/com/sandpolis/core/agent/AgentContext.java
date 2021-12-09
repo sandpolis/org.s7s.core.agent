@@ -9,10 +9,10 @@
 //============================================================================//
 package com.sandpolis.core.agent;
 
+import com.sandpolis.core.foundation.S7SEnvironmentVariable;
+import com.sandpolis.core.foundation.S7SSystemProperty;
 import com.sandpolis.core.instance.Entrypoint;
-import com.sandpolis.core.instance.EnvironmentVariable;
 import com.sandpolis.core.instance.RuntimeVariable;
-import com.sandpolis.core.instance.SystemProperty;
 import com.sandpolis.core.instance.state.oid.Oid;
 
 public class AgentContext {
@@ -23,7 +23,7 @@ public class AgentContext {
 	public static final RuntimeVariable<Integer> SERVER_COOLDOWN = RuntimeVariable.of(cfg -> {
 		cfg.type = Integer.class;
 		cfg.primary = Oid.of("com.sandpolis.core.agent:/profile/" + Entrypoint.data().uuid() + "/cooldown");
-		cfg.secondary = SystemProperty.of("s7s.agent.cooldown");
+		cfg.secondary = S7SSystemProperty.of("s7s.agent.cooldown");
 	});
 
 	/**
@@ -31,7 +31,7 @@ public class AgentContext {
 	 */
 	public static final RuntimeVariable<Integer> SERVER_TIMEOUT = RuntimeVariable.of(cfg -> {
 		cfg.type = Integer.class;
-		cfg.secondary = SystemProperty.of("s7s.agent.timeout");
+		cfg.secondary = S7SSystemProperty.of("s7s.agent.timeout");
 		cfg.defaultValue = () -> AgentConfig.EMBEDDED.network().timeout();
 	});
 
@@ -40,8 +40,8 @@ public class AgentContext {
 	 */
 	public static final RuntimeVariable<String> SERVER_ADDRESS = RuntimeVariable.of(cfg -> {
 		cfg.type = String.class;
-		cfg.secondary = SystemProperty.of("s7s.agent.address");
-		cfg.tertiary = EnvironmentVariable.of("S7S_SERVER_ADDRESS");
+		cfg.secondary = S7SSystemProperty.of("s7s.agent.address");
+		cfg.tertiary = S7SEnvironmentVariable.of("S7S_SERVER_ADDRESS");
 		cfg.defaultValue = () -> AgentConfig.EMBEDDED.network().server_address();
 	});
 
@@ -50,7 +50,7 @@ public class AgentContext {
 	 */
 	public static final RuntimeVariable<String> AUTH_CERTIFICATE = RuntimeVariable.of(cfg -> {
 		cfg.type = String.class;
-		cfg.secondary = SystemProperty.of("s7s.agent.auth.type");
+		cfg.secondary = S7SSystemProperty.of("s7s.agent.auth.type");
 	});
 
 	/**
@@ -58,6 +58,6 @@ public class AgentContext {
 	 */
 	public static final RuntimeVariable<String> AUTH_PASSWORD = RuntimeVariable.of(cfg -> {
 		cfg.type = String.class;
-		cfg.secondary = SystemProperty.of("s7s.agent.auth.password");
+		cfg.secondary = S7SSystemProperty.of("s7s.agent.auth.password");
 	});
 }
