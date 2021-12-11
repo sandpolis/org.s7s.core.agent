@@ -23,9 +23,11 @@ dependencies {
 		api("com.sandpolis:core.clientagent:+")
 		api("com.sandpolis:core.serveragent:+")
 		implementation("com.sandpolis:core.instance:+")
+		implementation("com.sandpolis:core.integration.uefi:+")
 	} else {
 		api(project(":core:com.sandpolis.core.clientagent"))
 		api(project(":core:com.sandpolis.core.serveragent"))
 		implementation(project(":core:com.sandpolis.core.instance"))
+		implementation(project(":core:integration:com.sandpolis.core.integration.uefi"))
 	}
 }

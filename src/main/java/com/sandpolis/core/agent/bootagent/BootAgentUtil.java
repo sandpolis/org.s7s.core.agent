@@ -23,43 +23,29 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sandpolis.core.agent.util.PowerControl;
+import com.sandpolis.core.foundation.S7SFile;
 import com.sandpolis.core.foundation.S7SProcess;
 import com.sandpolis.core.foundation.S7SSystem;
+import com.sandpolis.core.integration.uefi.GptHeader;
+import com.sandpolis.core.integration.uefi.GptPartition;
 
 public final class BootAgentUtil {
 
 	private static final Logger log = LoggerFactory.getLogger(BootAgentUtil.class);
 
-	private static final String S7S_BOOT_AGENT_GUID = "94C553B9-68CC-4AB3-AF38-218A02D57675";
-
+	/**
+	 * The partition type of an ESP partition.
+	 */
 	private static final String ESP_GUID = "C12A7328-F81F-11D2-BA4B-00A0C93EC93B";
 
-	public static GptPartition[] findPartitionCandidates() throws IOException {
+	public static GptPartition[] listEspPartitions() throws IOException {
 
 		List<GptPartition> entries = new ArrayList<>();
 
-		// TODO filter mounted partitions
 		for (var partition : listGptPartitions()) {
-			if (partition.type_guid().equalsIgnoreCase(S7S_BOOT_AGENT_GUID)) {
-				continue;
-			}
 
 			if (partition.type_guid().equalsIgnoreCase(ESP_GUID)) {
-				continue;
-			}
-
-			entries.add(partition);
-		}
-
-		return entries.toArray(GptPartition[]::new);
-	}
-
-	public static GptPartition[] findPartitions() throws IOException {
-
-		List<GptPartition> entries = new ArrayList<>();
-
-		for (var partition : listGptPartitions()) {
-			if (partition.type_guid().equals(S7S_BOOT_AGENT_GUID.toString())) {
 				entries.add(partition);
 			}
 		}
@@ -70,7 +56,7 @@ public final class BootAgentUtil {
 	public static void launch(String uuid) throws IOException, InterruptedException {
 
 		// Find the boot agent partition
-		var partition = Arrays.stream(findPartitions()).filter(p -> p.unique_guid().equals(uuid)).findFirst();
+		var partition = Arrays.stream(listEspPartitions()).filter(p -> p.unique_guid().equals(uuid)).findFirst();
 		if (partition.isEmpty()) {
 			throw new FileNotFoundException();
 		}
@@ -84,7 +70,7 @@ public final class BootAgentUtil {
 
 			// Create the boot entry (TODO manipulate the EFI vars without efibootmgr)
 			if (S7SProcess.exec("efibootmgr", "-c", "-d", "/dev/", "-p", "", "-L", "S7S Boot Agent", "-l",
-					"\\EFI\\s7s_x64.efi").exitValue() != 0) {
+					"\\EFI\\s7s_x64.efi").complete() != 0) {
 				throw new RuntimeException();
 			}
 
@@ -92,8 +78,8 @@ public final class BootAgentUtil {
 			new Thread(() -> {
 				try {
 					Thread.sleep(8000);
-					if (S7SProcess.exec("efibootmgr", "-n", "").exitValue() == 0) {
-						S7SProcess.exec("reboot");
+					if (S7SProcess.exec("efibootmgr", "-n", "").complete() == 0) {
+						PowerControl.of().reboot();
 					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -110,13 +96,17 @@ public final class BootAgentUtil {
 
 	public static void install(String uuid) throws IOException {
 
-		// Find the candidate partition
-		var partition = Arrays.stream(findPartitionCandidates()).filter(p -> p.unique_guid().equals(uuid)).findFirst();
+		// Find the target partition
+		var partition = Arrays.stream(listEspPartitions()).filter(p -> p.unique_guid().equals(uuid)).findFirst();
 		if (partition.isEmpty()) {
 			throw new FileNotFoundException();
 		}
 
-		// TODO
+		// Write to partition
+		if (S7SFile.which("lsblk").isPresent()) {
+			S7SProcess.exec("lsblk", "-pn", "-o", "PARTUUID,MOUNTPOINT").stdoutLines()
+					.filter(line -> line.startsWith(uuid));
+		}
 	}
 
 	private static int getLogicalBlockSize(Path device) {
@@ -132,7 +122,7 @@ public final class BootAgentUtil {
 				break;
 			}
 		} catch (Exception e) {
-			return 512;
+			log.debug("Failed to determine block size", e);
 		}
 
 		return 512;
