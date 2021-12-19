@@ -1,28 +1,27 @@
 //============================================================================//
 //                                                                            //
-//                         Copyright © 2015 Sandpolis                         //
+//            Copyright © 2015 - 2022 Sandpolis Software Foundation           //
 //                                                                            //
 //  This source file is subject to the terms of the Mozilla Public License    //
-//  version 2. You may not use this file except in compliance with the MPL    //
-//  as published by the Mozilla Foundation.                                   //
+//  version 2. You may not use this file except in compliance with the MPLv2. //
 //                                                                            //
 //============================================================================//
-module com.sandpolis.core.agent {
-	exports com.sandpolis.core.agent.init;
-	exports com.sandpolis.core.agent.exe;
-	exports com.sandpolis.core.agent.cmd;
-	exports com.sandpolis.core.agent;
+module org.s7s.core.agent {
+	exports org.s7s.core.agent.init;
+	exports org.s7s.core.agent.exe;
+	exports org.s7s.core.agent.cmd;
+	exports org.s7s.core.agent;
 
-	opens com.sandpolis.core.agent;
-	opens com.sandpolis.core.agent.init;
+	opens org.s7s.core.agent;
+	opens org.s7s.core.agent.init;
 
-	requires com.sandpolis.core.foundation;
-	requires com.sandpolis.core.instance;
-	requires com.sandpolis.core.clientagent;
-	requires com.sandpolis.core.serveragent;
+	requires org.s7s.core.foundation;
+	requires org.s7s.core.instance;
+	requires org.s7s.core.clientagent;
+	requires org.s7s.core.serveragent;
 	requires com.google.common;
 	requires org.slf4j;
 	requires com.google.protobuf;
 	requires com.fasterxml.jackson.databind;
-	requires com.sandpolis.core.integration.uefi;
+	requires org.s7s.core.integration.uefi;
 }

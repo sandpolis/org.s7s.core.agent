@@ -1,13 +1,12 @@
 //============================================================================//
 //                                                                            //
-//                         Copyright © 2015 Sandpolis                         //
+//            Copyright © 2015 - 2022 Sandpolis Software Foundation           //
 //                                                                            //
 //  This source file is subject to the terms of the Mozilla Public License    //
-//  version 2. You may not use this file except in compliance with the MPL    //
-//  as published by the Mozilla Foundation.                                   //
+//  version 2. You may not use this file except in compliance with the MPLv2. //
 //                                                                            //
 //============================================================================//
-package com.sandpolis.core.agent.bootagent;
+package org.s7s.core.agent.bootagent;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,12 +22,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sandpolis.core.agent.util.PowerControl;
-import com.sandpolis.core.foundation.S7SFile;
-import com.sandpolis.core.foundation.S7SProcess;
-import com.sandpolis.core.foundation.S7SSystem;
-import com.sandpolis.core.integration.uefi.GptHeader;
-import com.sandpolis.core.integration.uefi.GptPartition;
+import org.s7s.core.agent.util.PowerControl;
+import org.s7s.core.foundation.S7SFile;
+import org.s7s.core.foundation.S7SProcess;
+import org.s7s.core.foundation.S7SSystem;
+import org.s7s.core.integration.uefi.GptHeader;
+import org.s7s.core.integration.uefi.GptPartition;
 
 public final class BootAgentUtil {
 

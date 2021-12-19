@@ -1,19 +1,18 @@
 //============================================================================//
 //                                                                            //
-//                         Copyright © 2015 Sandpolis                         //
+//            Copyright © 2015 - 2022 Sandpolis Software Foundation           //
 //                                                                            //
 //  This source file is subject to the terms of the Mozilla Public License    //
-//  version 2. You may not use this file except in compliance with the MPL    //
-//  as published by the Mozilla Foundation.                                   //
+//  version 2. You may not use this file except in compliance with the MPLv2. //
 //                                                                            //
 //============================================================================//
-package com.sandpolis.core.agent.cmd;
+package org.s7s.core.agent.cmd;
 
 import java.util.concurrent.CompletionStage;
 
-import com.sandpolis.core.instance.cmdlet.Cmdlet;
-import com.sandpolis.core.serveragent.Messages.RQ_AuthSession;
-import com.sandpolis.core.serveragent.Messages.RS_AuthSession;
+import org.s7s.core.instance.cmdlet.Cmdlet;
+import org.s7s.core.serveragent.Messages.RQ_AuthSession;
+import org.s7s.core.serveragent.Messages.RS_AuthSession;
 
 /**
  * {@link AuthCmd} contains commands required for agent instances to

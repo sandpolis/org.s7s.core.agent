@@ -1,13 +1,12 @@
 //============================================================================//
 //                                                                            //
-//                         Copyright © 2015 Sandpolis                         //
+//            Copyright © 2015 - 2022 Sandpolis Software Foundation           //
 //                                                                            //
 //  This source file is subject to the terms of the Mozilla Public License    //
-//  version 2. You may not use this file except in compliance with the MPL    //
-//  as published by the Mozilla Foundation.                                   //
+//  version 2. You may not use this file except in compliance with the MPLv2. //
 //                                                                            //
 //============================================================================//
-package com.sandpolis.core.agent;
+package org.s7s.core.agent;
 
 import java.io.IOException;
 
@@ -15,8 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sandpolis.core.agent.AgentConfig.AuthConfig;
-import com.sandpolis.core.agent.AgentConfig.NetworkCfg;
+import org.s7s.core.agent.AgentConfig.AuthConfig;
+import org.s7s.core.agent.AgentConfig.NetworkCfg;
 
 public record AgentConfig(NetworkCfg network, AuthConfig auth) {
 
@@ -26,7 +25,7 @@ public record AgentConfig(NetworkCfg network, AuthConfig auth) {
 
 	private static AgentConfig load() {
 
-		try (var in = AgentConfig.class.getResourceAsStream("/com.sandpolis.core.agent.json")) {
+		try (var in = AgentConfig.class.getResourceAsStream("/org.s7s.core.agent.json")) {
 			if (in != null) {
 				return new ObjectMapper().readValue(in, AgentConfig.class);
 			}

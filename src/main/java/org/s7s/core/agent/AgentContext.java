@@ -1,19 +1,18 @@
 //============================================================================//
 //                                                                            //
-//                         Copyright © 2015 Sandpolis                         //
+//            Copyright © 2015 - 2022 Sandpolis Software Foundation           //
 //                                                                            //
 //  This source file is subject to the terms of the Mozilla Public License    //
-//  version 2. You may not use this file except in compliance with the MPL    //
-//  as published by the Mozilla Foundation.                                   //
+//  version 2. You may not use this file except in compliance with the MPLv2. //
 //                                                                            //
 //============================================================================//
-package com.sandpolis.core.agent;
+package org.s7s.core.agent;
 
-import com.sandpolis.core.foundation.S7SEnvironmentVariable;
-import com.sandpolis.core.foundation.S7SSystemProperty;
-import com.sandpolis.core.instance.Entrypoint;
-import com.sandpolis.core.instance.RuntimeVariable;
-import com.sandpolis.core.instance.state.oid.Oid;
+import org.s7s.core.foundation.S7SEnvironmentVariable;
+import org.s7s.core.foundation.S7SSystemProperty;
+import org.s7s.core.instance.Entrypoint;
+import org.s7s.core.instance.RuntimeVariable;
+import org.s7s.core.instance.state.oid.Oid;
 
 public class AgentContext {
 
@@ -22,7 +21,7 @@ public class AgentContext {
 	 */
 	public static final RuntimeVariable<Integer> SERVER_COOLDOWN = RuntimeVariable.of(cfg -> {
 		cfg.type = Integer.class;
-		cfg.primary = Oid.of("com.sandpolis.core.agent:/profile/" + Entrypoint.data().uuid() + "/cooldown");
+		cfg.primary = Oid.of("org.s7s.core.agent:/profile/" + Entrypoint.data().uuid() + "/cooldown");
 		cfg.secondary = S7SSystemProperty.of("s7s.agent.cooldown");
 	});
 

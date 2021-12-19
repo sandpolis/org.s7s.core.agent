@@ -1,45 +1,44 @@
 //============================================================================//
 //                                                                            //
-//                         Copyright © 2015 Sandpolis                         //
+//            Copyright © 2015 - 2022 Sandpolis Software Foundation           //
 //                                                                            //
 //  This source file is subject to the terms of the Mozilla Public License    //
-//  version 2. You may not use this file except in compliance with the MPL    //
-//  as published by the Mozilla Foundation.                                   //
+//  version 2. You may not use this file except in compliance with the MPLv2. //
 //                                                                            //
 //============================================================================//
-package com.sandpolis.core.agent.init;
+package org.s7s.core.agent.init;
 
-import static com.sandpolis.core.instance.plugin.PluginStore.PluginStore;
-import static com.sandpolis.core.instance.profile.ProfileStore.ProfileStore;
-import static com.sandpolis.core.instance.state.STStore.STStore;
-import static com.sandpolis.core.instance.connection.ConnectionStore.ConnectionStore;
-import static com.sandpolis.core.instance.exelet.ExeletStore.ExeletStore;
-import static com.sandpolis.core.instance.network.NetworkStore.NetworkStore;
-import static com.sandpolis.core.instance.stream.StreamStore.StreamStore;
+import static org.s7s.core.instance.plugin.PluginStore.PluginStore;
+import static org.s7s.core.instance.profile.ProfileStore.ProfileStore;
+import static org.s7s.core.instance.state.STStore.STStore;
+import static org.s7s.core.instance.connection.ConnectionStore.ConnectionStore;
+import static org.s7s.core.instance.exelet.ExeletStore.ExeletStore;
+import static org.s7s.core.instance.network.NetworkStore.NetworkStore;
+import static org.s7s.core.instance.stream.StreamStore.StreamStore;
 
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executors;
 
 import com.google.common.eventbus.Subscribe;
-import com.sandpolis.core.agent.AgentConfig;
-import com.sandpolis.core.agent.AgentContext;
-import com.sandpolis.core.agent.cmd.AuthCmd;
-import com.sandpolis.core.agent.exe.AgentExe;
-import com.sandpolis.core.clientagent.cmd.PluginCmd;
-import com.sandpolis.core.instance.Entrypoint;
-import com.sandpolis.core.instance.InitTask;
-import com.sandpolis.core.instance.InstanceContext;
-import com.sandpolis.core.instance.Messages.RQ_STStream;
-import com.sandpolis.core.instance.plugin.PluginStore;
-import com.sandpolis.core.instance.state.oid.Oid;
-import com.sandpolis.core.instance.state.st.EphemeralDocument;
-import com.sandpolis.core.instance.thread.ThreadStore;
-import com.sandpolis.core.instance.channel.client.ClientChannelInitializer;
-import com.sandpolis.core.instance.connection.ConnectionStore;
-import com.sandpolis.core.instance.network.NetworkStore.ServerEstablishedEvent;
-import com.sandpolis.core.instance.network.NetworkStore.ServerLostEvent;
-import com.sandpolis.core.instance.state.STCmd;
-import com.sandpolis.core.serveragent.Messages.RS_AuthSession;
+import org.s7s.core.agent.AgentConfig;
+import org.s7s.core.agent.AgentContext;
+import org.s7s.core.agent.cmd.AuthCmd;
+import org.s7s.core.agent.exe.AgentExe;
+import org.s7s.core.clientagent.cmd.PluginCmd;
+import org.s7s.core.instance.Entrypoint;
+import org.s7s.core.instance.InitTask;
+import org.s7s.core.instance.InstanceContext;
+import org.s7s.core.instance.Messages.RQ_STStream;
+import org.s7s.core.instance.plugin.PluginStore;
+import org.s7s.core.instance.state.oid.Oid;
+import org.s7s.core.instance.state.st.EphemeralDocument;
+import org.s7s.core.instance.thread.ThreadStore;
+import org.s7s.core.instance.channel.client.ClientChannelInitializer;
+import org.s7s.core.instance.connection.ConnectionStore;
+import org.s7s.core.instance.network.NetworkStore.ServerEstablishedEvent;
+import org.s7s.core.instance.network.NetworkStore.ServerLostEvent;
+import org.s7s.core.instance.state.STCmd;
+import org.s7s.core.serveragent.Messages.RS_AuthSession;
 
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.util.concurrent.UnorderedThreadPoolEventExecutor;

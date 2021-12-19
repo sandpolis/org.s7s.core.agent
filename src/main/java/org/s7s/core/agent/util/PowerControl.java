@@ -1,8 +1,16 @@
-package com.sandpolis.core.agent.util;
+//============================================================================//
+//                                                                            //
+//            Copyright © 2015 - 2022 Sandpolis Software Foundation           //
+//                                                                            //
+//  This source file is subject to the terms of the Mozilla Public License    //
+//  version 2. You may not use this file except in compliance with the MPLv2. //
+//                                                                            //
+//============================================================================//
+package org.s7s.core.agent.util;
 
-import com.sandpolis.core.foundation.S7SFile;
-import com.sandpolis.core.foundation.S7SProcess;
-import com.sandpolis.core.foundation.S7SSystem;
+import org.s7s.core.foundation.S7SFile;
+import org.s7s.core.foundation.S7SProcess;
+import org.s7s.core.foundation.S7SSystem;
 
 public final record PowerControl(boolean poweroffSupported, boolean rebootSupported, boolean suspendSupported,
 		boolean hibernateSupported) {

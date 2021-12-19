@@ -1,15 +1,14 @@
 //============================================================================//
 //                                                                            //
-//                         Copyright © 2015 Sandpolis                         //
+//            Copyright © 2015 - 2022 Sandpolis Software Foundation           //
 //                                                                            //
 //  This source file is subject to the terms of the Mozilla Public License    //
-//  version 2. You may not use this file except in compliance with the MPL    //
-//  as published by the Mozilla Foundation.                                   //
+//  version 2. You may not use this file except in compliance with the MPLv2. //
 //                                                                            //
 //============================================================================//
-package com.sandpolis.core.agent;
+package org.s7s.core.agent;
 
-import static com.sandpolis.core.instance.connection.ConnectionStore.ConnectionStore;
+import static org.s7s.core.instance.connection.ConnectionStore.ConnectionStore;
 
 import java.io.Console;
 import java.io.IOException;
@@ -17,10 +16,10 @@ import java.nio.file.Files;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Predicate;
 
-import com.sandpolis.core.agent.cmd.AuthCmd;
-import com.sandpolis.core.foundation.S7SString;
-import com.sandpolis.core.instance.connection.Connection;
-import com.sandpolis.core.serveragent.Messages.RS_AuthSession;
+import org.s7s.core.agent.cmd.AuthCmd;
+import org.s7s.core.foundation.S7SString;
+import org.s7s.core.instance.connection.Connection;
+import org.s7s.core.serveragent.Messages.RS_AuthSession;
 
 /**
  * Obtain the configuration from the user via the terminal.

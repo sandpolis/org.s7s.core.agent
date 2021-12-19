@@ -1,18 +1,17 @@
 //============================================================================//
 //                                                                            //
-//                         Copyright © 2015 Sandpolis                         //
+//            Copyright © 2015 - 2022 Sandpolis Software Foundation           //
 //                                                                            //
 //  This source file is subject to the terms of the Mozilla Public License    //
-//  version 2. You may not use this file except in compliance with the MPL    //
-//  as published by the Mozilla Foundation.                                   //
+//  version 2. You may not use this file except in compliance with the MPLv2. //
 //                                                                            //
 //============================================================================//
 
 plugins {
 	id("java-library")
-	id("com.sandpolis.build.module")
-	id("com.sandpolis.build.protobuf")
-	id("com.sandpolis.build.publish")
+	id("org.s7s.build.module")
+	id("org.s7s.build.protobuf")
+	id("org.s7s.build.publish")
 }
 
 dependencies {
@@ -20,14 +19,14 @@ dependencies {
 	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.+")
 
 	if (project.getParent() == null) {
-		api("com.sandpolis:core.clientagent:+")
-		api("com.sandpolis:core.serveragent:+")
-		implementation("com.sandpolis:core.instance:+")
-		implementation("com.sandpolis:core.integration.uefi:+")
+		api("org.s7s:core.clientagent:+")
+		api("org.s7s:core.serveragent:+")
+		implementation("org.s7s:core.instance:+")
+		implementation("org.s7s:core.integration.uefi:+")
 	} else {
-		api(project(":core:com.sandpolis.core.clientagent"))
-		api(project(":core:com.sandpolis.core.serveragent"))
-		implementation(project(":core:com.sandpolis.core.instance"))
-		implementation(project(":core:integration:com.sandpolis.core.integration.uefi"))
+		api(project(":core:org.s7s.core.clientagent"))
+		api(project(":core:org.s7s.core.serveragent"))
+		implementation(project(":core:org.s7s.core.instance"))
+		implementation(project(":core:integration:org.s7s.core.integration.uefi"))
 	}
 }
