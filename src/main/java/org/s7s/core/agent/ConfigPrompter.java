@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 import org.s7s.core.agent.cmd.AuthCmd;
 import org.s7s.core.foundation.S7SString;
 import org.s7s.core.instance.connection.Connection;
-import org.s7s.core.serveragent.Messages.RS_AuthSession;
+import org.s7s.core.protocol.Session.RS_AuthSession;
 
 /**
  * Obtain the configuration from the user via the terminal.

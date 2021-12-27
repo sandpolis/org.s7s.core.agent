@@ -11,8 +11,8 @@ package org.s7s.core.agent.cmd;
 import java.util.concurrent.CompletionStage;
 
 import org.s7s.core.instance.cmdlet.Cmdlet;
-import org.s7s.core.serveragent.Messages.RQ_AuthSession;
-import org.s7s.core.serveragent.Messages.RS_AuthSession;
+import org.s7s.core.protocol.Session.RQ_AuthSession;
+import org.s7s.core.protocol.Session.RS_AuthSession;
 
 /**
  * {@link AuthCmd} contains commands required for agent instances to

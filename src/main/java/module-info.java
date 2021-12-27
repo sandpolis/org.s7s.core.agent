@@ -8,7 +8,6 @@
 //============================================================================//
 module org.s7s.core.agent {
 	exports org.s7s.core.agent.init;
-	exports org.s7s.core.agent.exe;
 	exports org.s7s.core.agent.cmd;
 	exports org.s7s.core.agent;
 
@@ -17,8 +16,6 @@ module org.s7s.core.agent {
 
 	requires org.s7s.core.foundation;
 	requires org.s7s.core.instance;
-	requires org.s7s.core.clientagent;
-	requires org.s7s.core.serveragent;
 	requires com.google.common;
 	requires org.slf4j;
 	requires com.google.protobuf;

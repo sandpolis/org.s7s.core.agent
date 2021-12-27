@@ -23,12 +23,11 @@ import com.google.common.eventbus.Subscribe;
 import org.s7s.core.agent.AgentConfig;
 import org.s7s.core.agent.AgentContext;
 import org.s7s.core.agent.cmd.AuthCmd;
-import org.s7s.core.agent.exe.AgentExe;
-import org.s7s.core.clientagent.cmd.PluginCmd;
+import org.s7s.core.instance.plugin.PluginCmd;
 import org.s7s.core.instance.Entrypoint;
 import org.s7s.core.instance.InitTask;
 import org.s7s.core.instance.InstanceContext;
-import org.s7s.core.instance.Messages.RQ_STStream;
+import org.s7s.core.protocol.Stream.RQ_STStream;
 import org.s7s.core.instance.plugin.PluginStore;
 import org.s7s.core.instance.state.oid.Oid;
 import org.s7s.core.instance.state.st.EphemeralDocument;
@@ -38,7 +37,7 @@ import org.s7s.core.instance.connection.ConnectionStore;
 import org.s7s.core.instance.network.NetworkStore.ServerEstablishedEvent;
 import org.s7s.core.instance.network.NetworkStore.ServerLostEvent;
 import org.s7s.core.instance.state.STCmd;
-import org.s7s.core.serveragent.Messages.RS_AuthSession;
+import org.s7s.core.protocol.Session.RS_AuthSession;
 
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.util.concurrent.UnorderedThreadPoolEventExecutor;
@@ -73,7 +72,7 @@ public class AgentLoadStores extends InitTask {
 		});
 
 		ExeletStore.init(config -> {
-			config.exelets.add(AgentExe.class);
+			//config.exelets.add(AgentExe.class);
 		});
 
 		ConnectionStore.init(config -> {
